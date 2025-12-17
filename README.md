@@ -40,6 +40,7 @@ npm install
 ```
 
 Create a `.env` file in the `server` directory (already provided in the code, but ensure it exists):
+copy .env.example to create .env
 ```env
 PORT=5000
 MONGO_URI=mongodb://admin:password@localhost:27017/alobha_db?authSource=admin
