@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
+const User = require('./models/User'); // Import User model
+const bcrypt = require('bcryptjs'); // Import bcryptjs
 
 dotenv.config();
 
@@ -20,8 +22,40 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log('MongoDB Connected'))
+.then(() => {
+    console.log('MongoDB Connected');
+    seedAdminUser(); // Call the function to seed admin user
+})
 .catch(err => console.log(err));
+
+// Function to seed admin user
+const seedAdminUser = async () => {
+    try {
+        const adminUsername = process.env.ADMIN_USERNAME;
+        const adminPassword = process.env.ADMIN_PASSWORD;
+
+        if (!adminUsername || !adminPassword) {
+            console.warn('ADMIN_USERNAME or ADMIN_PASSWORD not set in .env. Skipping admin user seeding.');
+            return;
+        }
+
+        const adminExists = await User.findOne({ username: adminUsername });
+
+        if (!adminExists) {
+            const hashedPassword = await bcrypt.hash(adminPassword, 10);
+            await User.create({
+                username: adminUsername,
+                password: hashedPassword,
+                role: 'admin',
+            });
+            console.log('Admin user seeded successfully!');
+        } else {
+            console.log('Admin user already exists.');
+        }
+    } catch (error) {
+        console.error('Error seeding admin user:', error);
+    }
+};
 
 // Routes
 app.use('/api/auth', authRoutes);

@@ -16,10 +16,14 @@ const registerUser = async (req, res) => {
         return res.status(400).json({ message: 'User already exists' });
     }
 
+    if (role === 'admin') {
+        return res.status(403).json({ message: 'Cannot register as admin directly' });
+    }
+
     const user = await User.create({
         username,
         password,
-        role
+        role: role || 'user' // Default to 'user' if no role is provided
     });
 
     if (user) {

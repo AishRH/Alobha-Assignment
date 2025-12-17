@@ -14,13 +14,15 @@ const EmployeeList = () => {
     const [keyword, setKeyword] = useState('');
     const [departmentFilter, setDepartmentFilter] = useState('');
 
+    const [limit, setLimit] = useState(10); // New state for limit
+
     useEffect(() => {
         fetchDepartments();
     }, []);
 
     useEffect(() => {
         fetchEmployees();
-    }, [page, keyword, departmentFilter]);
+    }, [page, keyword, departmentFilter, limit]); // Add limit to dependency array
 
     const fetchDepartments = async () => {
         try {
@@ -33,7 +35,7 @@ const EmployeeList = () => {
 
     const fetchEmployees = async () => {
         try {
-            const { data } = await api.get(`/employees?pageNumber=${page}&keyword=${keyword}&department=${departmentFilter}`);
+            const { data } = await api.get(`/employees?page=${page}&limit=${limit}&keyword=${keyword}&department=${departmentFilter}`);
             setEmployees(data.employees);
             setPages(data.pages);
             setLoading(false);
@@ -137,6 +139,13 @@ const EmployeeList = () => {
 
                     {pages > 1 && (
                         <div className="flex justify-center mt-4 gap-2">
+                            <button
+                                onClick={() => setPage(prev => Math.max(1, prev - 1))}
+                                disabled={page === 1}
+                                className="px-3 py-1 rounded bg-gray-200 disabled:opacity-50"
+                            >
+                                Previous
+                            </button>
                             {[...Array(pages).keys()].map(x => (
                                 <button
                                     key={x + 1}
@@ -146,6 +155,13 @@ const EmployeeList = () => {
                                     {x + 1}
                                 </button>
                             ))}
+                            <button
+                                onClick={() => setPage(prev => Math.min(pages, prev + 1))}
+                                disabled={page === pages}
+                                className="px-3 py-1 rounded bg-gray-200 disabled:opacity-50"
+                            >
+                                Next
+                            </button>
                         </div>
                     )}
                 </>

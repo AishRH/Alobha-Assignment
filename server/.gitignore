@@ -2,3 +2,12 @@
 node_modules/
 dist/
 build/
+
+# OS generated files
+Thumbs.db
+
+# Temporary files
+*.bak
+*.tmp
+*.swp
+*~

@@ -4,8 +4,8 @@ const path = require('path');
 
 const getEmployees = async (req, res) => {
     try {
-        const pageSize = 5;
-        const page = Number(req.query.pageNumber) || 1;
+        const limit = Number(req.query.limit) || 10; // Default to 10 employees per page
+        const page = Number(req.query.page) || 1;
 
         const keyword = req.query.keyword
             ? {
@@ -21,10 +21,10 @@ const getEmployees = async (req, res) => {
         const count = await Employee.countDocuments({ ...keyword, ...departmentFilter });
         const employees = await Employee.find({ ...keyword, ...departmentFilter })
             .populate('department', 'name')
-            .limit(pageSize)
-            .skip(pageSize * (page - 1));
+            .limit(limit)
+            .skip(limit * (page - 1));
 
-        res.json({ employees, page, pages: Math.ceil(count / pageSize) });
+        res.json({ employees, page, pages: Math.ceil(count / limit) });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
