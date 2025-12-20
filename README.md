@@ -1,3 +1,5 @@
+You can access the solution here: https://alobha-assignment-norhe9v7q-aishwarya-vardhan-ashoks-projects.vercel.app/
+
 # Employee Management System
 
 A full-stack MERN application for managing employees and departments.
