@@ -33,7 +33,7 @@ const Dashboard = () => {
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
             <div className="bg-white p-6 rounded shadow mb-6">
-                <h2 className="text-xl mb-2">Welcome, {user?.username}!</h2>
+                <h2 className="text-xl mb-2">Welcome, {user?.username.split('@')[0]}!</h2>
                 <p>Role: <span className="font-bold uppercase text-blue-600">{user?.role}</span></p>
             </div>
 
