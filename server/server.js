@@ -42,10 +42,9 @@ const seedAdminUser = async () => {
         const adminExists = await User.findOne({ username: adminUsername });
 
         if (!adminExists) {
-            const hashedPassword = await bcrypt.hash(adminPassword, 10);
             await User.create({
                 username: adminUsername,
-                password: hashedPassword,
+                password: adminPassword,
                 role: 'admin',
             });
             console.log('Admin user seeded successfully!');
