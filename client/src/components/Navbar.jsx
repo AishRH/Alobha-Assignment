@@ -18,7 +18,6 @@ const Navbar = () => {
                 <div>
                     {user ? (
                         <div className="flex gap-4 items-center">
-                            <span className="text-gray-300">Welcome, {user.username}</span>
                             <Link to="/" className="hover:text-gray-300">Dashboard</Link>
                             <Link to="/employees" className="hover:text-gray-300">Employees</Link>
                             <Link to="/departments" className="hover:text-gray-300">Departments</Link>
